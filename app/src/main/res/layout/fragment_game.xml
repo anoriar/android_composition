@@ -105,7 +105,6 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pb_answer_progress"
-        app:layout_constraintVertical_chainStyle="packed"
         tools:ignore="TextContrastCheck"
         tools:text="1" />
 
