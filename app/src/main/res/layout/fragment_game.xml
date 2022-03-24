@@ -106,6 +106,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pb_answer_progress"
         app:layout_constraintVertical_chainStyle="packed"
+        tools:ignore="TextContrastCheck"
         tools:text="1" />
 
     <TextView
@@ -118,6 +119,7 @@
         app:layout_constraintEnd_toStartOf="@+id/tv_option_3"
         app:layout_constraintStart_toEndOf="@+id/tv_option_1"
         app:layout_constraintTop_toTopOf="@+id/tv_option_1"
+        tools:ignore="TextContrastCheck"
         tools:text="2" />
 
     <TextView
@@ -143,6 +145,7 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_option_1"
+        tools:ignore="TextContrastCheck"
         tools:text="4" />
 
     <TextView
