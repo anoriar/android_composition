@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.composition.R
 import com.example.composition.databinding.FragmentGameBinding
+import com.example.composition.domain.entity.GameResult
+import com.example.composition.domain.entity.GameSettings
 import com.example.composition.domain.entity.Level
 
 /**
@@ -36,10 +39,43 @@ class GameFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initOptionsButtons()
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun initOptionsButtons() {
+        binding.tvOption1.setOnClickListener {
+            launchGameFinishedFragment(
+                GameResult(
+                    true,
+                    1,
+                    2,
+                    GameSettings(
+                        5,
+                        4,
+                        2,
+                        1
+                    )
+                )
+            )
+        }
+    }
+
+    private fun launchGameFinishedFragment(gameResult: GameResult) {
+        requireActivity().supportFragmentManager.beginTransaction().replace(
+            R.id.main_container,
+            GameFinishedFragment.getInstance(
+                gameResult
+            )
+        )
+            .addToBackStack(null).commit()
     }
 
     private fun parseArguments() {
@@ -49,6 +85,8 @@ class GameFragment : Fragment() {
 
     companion object {
         private const val LEVEL_KEY = "level"
+
+        const val FRAGMENT_NAME = "game_fragment"
 
         fun getInstance(level: Level): GameFragment {
             return GameFragment().apply {
