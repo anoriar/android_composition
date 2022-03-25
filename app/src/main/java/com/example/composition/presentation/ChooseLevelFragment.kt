@@ -9,6 +9,7 @@ import com.example.composition.R
 import com.example.composition.databinding.FragmentChooseLevelBinding
 import com.example.composition.databinding.FragmentGameBinding
 import com.example.composition.databinding.FragmentWelcomeBinding
+import com.example.composition.domain.entity.Level
 
 
 /**
@@ -24,7 +25,6 @@ class ChooseLevelFragment : Fragment() {
             return _binding ?: throw RuntimeException("Binding can not be null")
         }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,8 +33,44 @@ class ChooseLevelFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initButtons()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun initButtons() {
+        binding.btnTestLevel.setOnClickListener {
+            launchGameFragment(Level.TEST)
+        }
+        binding.btnEasyLevel.setOnClickListener {
+            launchGameFragment(Level.EASY)
+        }
+
+        binding.btnNormalLevel.setOnClickListener {
+            launchGameFragment(Level.NORMAL)
+        }
+
+        binding.btnHardLevel.setOnClickListener {
+            launchGameFragment(Level.HARD)
+        }
+    }
+
+    private fun launchGameFragment(level: Level) {
+        requireActivity().supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.main_container, GameFragment.getInstance(level))
+            .addToBackStack(null)
+            .commit()
+    }
+
+    companion object {
+        fun getInstance(): ChooseLevelFragment {
+            return ChooseLevelFragment()
+        }
     }
 }

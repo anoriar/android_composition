@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.composition.R
 import com.example.composition.databinding.FragmentWelcomeBinding
 
 
@@ -33,19 +34,21 @@ class WelcomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnWelcome.setOnClickListener {
+        initWelcomeBtn()
+    }
 
+    private fun initWelcomeBtn() {
+        binding.btnWelcome.setOnClickListener {
+            requireActivity().supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.main_container, ChooseLevelFragment.getInstance())
+                .addToBackStack(null)
+                .commit()
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-    }
-
-    companion object {
-        fun getInstance(): WelcomeFragment {
-            return WelcomeFragment()
-        }
     }
 }
