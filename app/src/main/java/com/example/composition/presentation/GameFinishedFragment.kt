@@ -40,13 +40,29 @@ class GameFinishedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        Если нажата кнопка "Назад"
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                retryGame()
-            }
 
-        })
+        handleOnBackPressed()
+        initBtnRetry()
+    }
+
+    /**
+     * Если нажата кнопка "Назад"
+     */
+    private fun handleOnBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    retryGame()
+                }
+
+            })
+    }
+
+    private fun initBtnRetry() {
+        binding.btnRetry.setOnClickListener {
+            retryGame()
+        }
     }
 
     override fun onDestroy() {
@@ -55,8 +71,9 @@ class GameFinishedFragment : Fragment() {
     }
 
     private fun parseArguments() {
-        val args = requireArguments()
-        gameResult = args.getSerializable(GAME_RESULT) as GameResult
+        requireArguments().getParcelable<GameResult>(GAME_RESULT)?.let {
+            gameResult = it
+        }
     }
 
     private fun retryGame() {
@@ -72,7 +89,7 @@ class GameFinishedFragment : Fragment() {
         fun getInstance(gameResult: GameResult): GameFinishedFragment {
             return GameFinishedFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(GAME_RESULT, gameResult)
+                    putParcelable(GAME_RESULT, gameResult)
                 }
             }
         }

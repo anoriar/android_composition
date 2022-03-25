@@ -79,8 +79,9 @@ class GameFragment : Fragment() {
     }
 
     private fun parseArguments() {
-        val args = requireArguments()
-        level = args.getSerializable(LEVEL_KEY) as Level
+        requireArguments().getParcelable<Level>(LEVEL_KEY)?.let {
+            level = it
+        }
     }
 
     companion object {
@@ -91,7 +92,7 @@ class GameFragment : Fragment() {
         fun getInstance(level: Level): GameFragment {
             return GameFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(LEVEL_KEY, level)
+                    putParcelable(LEVEL_KEY, level)
                 }
             }
         }
