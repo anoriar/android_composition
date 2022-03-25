@@ -1,14 +1,14 @@
 package com.example.composition.presentation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.composition.R
 import com.example.composition.databinding.FragmentGameBinding
 import com.example.composition.domain.entity.GameResult
-import com.example.composition.domain.entity.GameSettings
 import com.example.composition.domain.entity.Level
 
 /**
@@ -17,6 +17,8 @@ import com.example.composition.domain.entity.Level
  * create an instance of this fragment.
  */
 class GameFragment : Fragment() {
+
+    private lateinit var gameViewModel: GameViewModel
 
     private var _binding: FragmentGameBinding? = null
     private val binding: FragmentGameBinding
@@ -41,7 +43,11 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        gameViewModel = ViewModelProvider(this).get(GameViewModel::class.java)
+        gameViewModel.startGame(level)
+        launchObservers()
         initOptionsButtons()
+
     }
 
 
@@ -50,21 +56,59 @@ class GameFragment : Fragment() {
         _binding = null
     }
 
+    private fun launchObservers() {
+        gameViewModel.curTime.observe(viewLifecycleOwner) {
+            binding.tvGameTime.text =
+                String.format("%02d:%02d", (it / 60), (it % 60))
+        }
+
+        gameViewModel.question.observe(viewLifecycleOwner) {
+
+            binding.tvOption1.text = it.options[0].toString()
+            binding.tvOption2.text = it.options[1].toString()
+            binding.tvOption3.text = it.options[2].toString()
+            binding.tvOption4.text = it.options[3].toString()
+            binding.tvOption5.text = it.options[4].toString()
+            binding.tvOption6.text = it.options[5].toString()
+
+            binding.tvSum.text = it.sum.toString()
+            binding.tvVisibleNumber.text = it.visibleNumber.toString()
+        }
+
+        gameViewModel.gameResult.observe(viewLifecycleOwner) {
+            binding.tvAnswerProgress.text = String.format(
+                resources.getString(R.string.progress_answers),
+                it.countOfRightAnswers.toString(),
+                it.gameSettings.minCountOfRightAnswers.toString()
+            )
+        }
+        gameViewModel.isFinished.observe(viewLifecycleOwner) {
+            if (it) {
+                gameViewModel.gameResult.observe(viewLifecycleOwner) { gameResult ->
+                    launchGameFinishedFragment(gameResult)
+                }
+            }
+        }
+    }
+
     private fun initOptionsButtons() {
         binding.tvOption1.setOnClickListener {
-            launchGameFinishedFragment(
-                GameResult(
-                    true,
-                    1,
-                    2,
-                    GameSettings(
-                        5,
-                        4,
-                        2,
-                        1
-                    )
-                )
-            )
+            gameViewModel.answerToQuestion(0)
+        }
+        binding.tvOption2.setOnClickListener {
+            gameViewModel.answerToQuestion(1)
+        }
+        binding.tvOption3.setOnClickListener {
+            gameViewModel.answerToQuestion(2)
+        }
+        binding.tvOption4.setOnClickListener {
+            gameViewModel.answerToQuestion(3)
+        }
+        binding.tvOption5.setOnClickListener {
+            gameViewModel.answerToQuestion(4)
+        }
+        binding.tvOption6.setOnClickListener {
+            gameViewModel.answerToQuestion(5)
         }
     }
 
