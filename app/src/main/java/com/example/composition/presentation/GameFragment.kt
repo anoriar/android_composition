@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.composition.R
 import com.example.composition.databinding.FragmentGameBinding
 import com.example.composition.domain.entity.GameResult
@@ -26,10 +27,12 @@ import org.w3c.dom.Text
  */
 class GameFragment : Fragment() {
 
+    private val args by navArgs<GameFragmentArgs>()
+
     private val gameViewModel: GameViewModel by lazy {
         ViewModelProvider(
             this,
-            GameViewModelFactory(level, requireActivity().application)
+            GameViewModelFactory(args.level, requireActivity().application)
         )[GameViewModel::class.java]
     }
 
@@ -54,7 +57,6 @@ class GameFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        parseArguments()
     }
 
     override fun onCreateView(
@@ -146,30 +148,10 @@ class GameFragment : Fragment() {
     }
 
     private fun launchGameFinishedFragment(gameResult: GameResult) {
-        val args = Bundle().apply {
-            putParcelable(GameFinishedFragment.GAME_RESULT, gameResult)
-        }
-        findNavController().navigate(R.id.action_gameFragment_to_gameFinishedFragment, args)
+        findNavController().navigate(
+            GameFragmentDirections.actionGameFragmentToGameFinishedFragment(
+                gameResult
+            )
+        )
     }
-
-    private fun parseArguments() {
-        requireArguments().getParcelable<Level>(LEVEL_KEY)?.let {
-            level = it
-        }
-    }
-
-    companion object {
-        const val LEVEL_KEY = "level"
-
-        const val FRAGMENT_NAME = "game_fragment"
-
-        fun getInstance(level: Level): GameFragment {
-            return GameFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(LEVEL_KEY, level)
-                }
-            }
-        }
-    }
-
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.navArgs
 import com.example.composition.R
 import com.example.composition.databinding.FragmentGameFinishedBinding
 import com.example.composition.domain.entity.GameResult
@@ -18,18 +19,14 @@ import com.example.composition.domain.entity.GameResult
  * create an instance of this fragment.
  */
 class GameFinishedFragment : Fragment() {
-    private lateinit var gameResult: GameResult
+
+    private val args by navArgs<GameFinishedFragmentArgs>()
 
     private var _binding: FragmentGameFinishedBinding? = null
     private val binding: FragmentGameFinishedBinding
         get() {
             return _binding ?: throw RuntimeException("Binding can not be null")
         }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        parseArguments()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,6 +50,7 @@ class GameFinishedFragment : Fragment() {
     }
 
     private fun bindViews() {
+        val gameResult = args.gameResult
         val icon = if (gameResult.winner) R.drawable.ic_smile else R.drawable.ic_sad
         binding.ivSmile.setImageResource(icon)
         binding.tvRequiredScore.text = String.format(
@@ -73,7 +71,7 @@ class GameFinishedFragment : Fragment() {
         )
     }
 
-    private fun getPercentOfRightAnswers() = with(gameResult) {
+    private fun getPercentOfRightAnswers() = with(args.gameResult) {
         if (countOfQuestions == 0) {
             0
         } else {
@@ -86,25 +84,7 @@ class GameFinishedFragment : Fragment() {
         _binding = null
     }
 
-    private fun parseArguments() {
-        requireArguments().getParcelable<GameResult>(GAME_RESULT)?.let {
-            gameResult = it
-        }
-    }
-
     private fun retryGame() {
         requireActivity().supportFragmentManager.popBackStack()
-    }
-
-    companion object {
-        const val GAME_RESULT = "game_result"
-
-        fun getInstance(gameResult: GameResult): GameFinishedFragment {
-            return GameFinishedFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(GAME_RESULT, gameResult)
-                }
-            }
-        }
     }
 }
