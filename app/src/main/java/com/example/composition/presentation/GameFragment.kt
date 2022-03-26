@@ -105,11 +105,11 @@ class GameFragment : Fragment() {
         }
 
         gameViewModel.minPercent.observe(viewLifecycleOwner) {
-            binding.pbAnswerProgress.progress = it
+            binding.pbAnswerProgress.secondaryProgress = it
         }
 
         gameViewModel.percentOfRightAnswers.observe(viewLifecycleOwner) {
-            binding.pbAnswerProgress.secondaryProgress = it
+            binding.pbAnswerProgress.progress = it
         }
     }
 
