@@ -1,5 +1,8 @@
 package com.example.composition.presentation
 
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.ColorFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -57,9 +60,8 @@ class GameFragment : Fragment() {
     }
 
     private fun launchObservers() {
-        gameViewModel.curTime.observe(viewLifecycleOwner) {
-            binding.tvGameTime.text =
-                String.format("%02d:%02d", (it / 60), (it % 60))
+        gameViewModel.formattedTime.observe(viewLifecycleOwner) {
+            binding.tvGameTime.text = it
         }
 
         gameViewModel.question.observe(viewLifecycleOwner) {
@@ -75,12 +77,8 @@ class GameFragment : Fragment() {
             binding.tvVisibleNumber.text = it.visibleNumber.toString()
         }
 
-        gameViewModel.gameResult.observe(viewLifecycleOwner) {
-            binding.tvAnswerProgress.text = String.format(
-                resources.getString(R.string.progress_answers),
-                it.countOfRightAnswers.toString(),
-                it.gameSettings.minCountOfRightAnswers.toString()
-            )
+        gameViewModel.progressAnswers.observe(viewLifecycleOwner) {
+            binding.tvAnswerProgress.text = it
         }
         gameViewModel.isFinished.observe(viewLifecycleOwner) {
             if (it) {
@@ -89,26 +87,50 @@ class GameFragment : Fragment() {
                 }
             }
         }
+
+        gameViewModel.enoughCount.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.tvAnswerProgress.setTextColor(Color.GREEN)
+            } else {
+                binding.tvAnswerProgress.setTextColor(Color.RED)
+            }
+
+        }
+        gameViewModel.enoughPercent.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.pbAnswerProgress.progressTintList = ColorStateList.valueOf(Color.GREEN)
+            } else {
+                binding.pbAnswerProgress.progressTintList = ColorStateList.valueOf(Color.RED)
+            }
+        }
+
+        gameViewModel.minPercent.observe(viewLifecycleOwner) {
+            binding.pbAnswerProgress.progress = it
+        }
+
+        gameViewModel.percentOfRightAnswers.observe(viewLifecycleOwner) {
+            binding.pbAnswerProgress.secondaryProgress = it
+        }
     }
 
     private fun initOptionsButtons() {
         binding.tvOption1.setOnClickListener {
-            gameViewModel.answerToQuestion(0)
+            gameViewModel.chooseAnswer(binding.tvOption1.text.toString().toInt())
         }
         binding.tvOption2.setOnClickListener {
-            gameViewModel.answerToQuestion(1)
+            gameViewModel.chooseAnswer(binding.tvOption2.text.toString().toInt())
         }
         binding.tvOption3.setOnClickListener {
-            gameViewModel.answerToQuestion(2)
+            gameViewModel.chooseAnswer(binding.tvOption3.text.toString().toInt())
         }
         binding.tvOption4.setOnClickListener {
-            gameViewModel.answerToQuestion(3)
+            gameViewModel.chooseAnswer(binding.tvOption4.text.toString().toInt())
         }
         binding.tvOption5.setOnClickListener {
-            gameViewModel.answerToQuestion(4)
+            gameViewModel.chooseAnswer(binding.tvOption5.text.toString().toInt())
         }
         binding.tvOption6.setOnClickListener {
-            gameViewModel.answerToQuestion(5)
+            gameViewModel.chooseAnswer(binding.tvOption6.text.toString().toInt())
         }
     }
 
