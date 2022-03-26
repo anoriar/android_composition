@@ -42,23 +42,8 @@ class GameFinishedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        handleOnBackPressed()
         initBtnRetry()
         bindViews()
-    }
-
-    /**
-     * Если нажата кнопка "Назад"
-     */
-    private fun handleOnBackPressed() {
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    retryGame()
-                }
-
-            })
     }
 
     private fun initBtnRetry() {
@@ -108,10 +93,7 @@ class GameFinishedFragment : Fragment() {
     }
 
     private fun retryGame() {
-        requireActivity().supportFragmentManager.popBackStack(
-            GameFragment.FRAGMENT_NAME,
-            FragmentManager.POP_BACK_STACK_INCLUSIVE
-        )
+        requireActivity().supportFragmentManager.popBackStack()
     }
 
     companion object {
