@@ -2,9 +2,9 @@ package com.example.composition.presentation
 
 import android.app.Application
 import android.os.CountDownTimer
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.composition.R
 import com.example.composition.data.GameRepositoryImpl
 import com.example.composition.domain.entity.GameResult
@@ -15,7 +15,7 @@ import com.example.composition.domain.repository.GameRepository
 import com.example.composition.domain.usecases.GenerateQuestionUseCase
 import com.example.composition.domain.usecases.GetGameSettingsUseCase
 
-class GameViewModel(application: Application) : AndroidViewModel(application) {
+class GameViewModel(private val level: Level, private val application: Application) : ViewModel() {
 
     private val gameRepository: GameRepository = GameRepositoryImpl
     private val context = application
@@ -65,8 +65,12 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     private var countOfRightAnswers = 0
     private var countOfQuestions = 0
 
+    init {
+        startGame()
+    }
 
-    fun startGame(level: Level) {
+
+    private fun startGame() {
         gameSettings = getGameSettingsUseCase.invoke(level)
         _minPercent.value = gameSettings.minPercentOfRightAnswers
         startTimer()
