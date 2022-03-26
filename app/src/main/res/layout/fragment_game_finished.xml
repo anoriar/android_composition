@@ -19,11 +19,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_rightAnswers"
+        android:id="@+id/tv_requiredScore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
-        android:text="@string/right_answers"
+        android:text="@string/required_score"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_smile" />
 
@@ -34,7 +34,7 @@
         android:layout_marginTop="15dp"
         android:text="@string/score_answers"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_rightAnswers" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_requiredScore" />
 
     <TextView
         android:id="@+id/tv_required_percentage"
