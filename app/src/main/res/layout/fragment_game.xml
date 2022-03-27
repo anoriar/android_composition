@@ -143,6 +143,8 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="TextContrastCheck"
+            app:onOptionClickListener="@{(option) -> viewModel.chooseAnswer(option)}"
+            android:text="@{viewModel.question.options.get(0).toString()}"
             tools:text="1" />
 
         <TextView
@@ -156,6 +158,8 @@
             app:layout_constraintStart_toEndOf="@+id/tv_option_1"
             app:layout_constraintTop_toTopOf="@+id/tv_option_1"
             tools:ignore="TextContrastCheck"
+            app:onOptionClickListener="@{(option) -> viewModel.chooseAnswer(option)}"
+            android:text="@{viewModel.question.options.get(1).toString()}"
             tools:text="2" />
 
         <TextView
@@ -168,6 +172,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_option_2"
             app:layout_constraintTop_toTopOf="@+id/tv_option_2"
+            app:onOptionClickListener="@{(option) -> viewModel.chooseAnswer(option)}"
+            android:text="@{viewModel.question.options.get(2).toString()}"
             tools:text="3" />
 
         <TextView
@@ -181,6 +187,8 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="TextContrastCheck"
+            app:onOptionClickListener="@{(option) -> viewModel.chooseAnswer(option)}"
+            android:text="@{viewModel.question.options.get(3).toString()}"
             tools:text="4" />
 
         <TextView
@@ -193,6 +201,8 @@
             app:layout_constraintEnd_toStartOf="@+id/tv_option_6"
             app:layout_constraintStart_toEndOf="@+id/tv_option_4"
             app:layout_constraintTop_toTopOf="@+id/tv_option_4"
+            app:onOptionClickListener="@{(option) -> viewModel.chooseAnswer(option)}"
+            android:text="@{viewModel.question.options.get(4).toString()}"
             tools:text="5" />
 
         <TextView
@@ -205,6 +215,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_option_5"
             app:layout_constraintTop_toTopOf="@+id/tv_option_5"
+            app:onOptionClickListener="@{(option) -> viewModel.chooseAnswer(option)}"
+            android:text="@{viewModel.question.options.get(5).toString()}"
             tools:text="6" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

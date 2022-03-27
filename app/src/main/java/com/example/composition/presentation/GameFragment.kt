@@ -42,17 +42,6 @@ class GameFragment : Fragment() {
             return _binding ?: throw RuntimeException("Binding can not be null")
         }
 
-    private val tvOptions: MutableList<TextView> by lazy {
-        mutableListOf(
-            binding.tvOption1,
-            binding.tvOption2,
-            binding.tvOption3,
-            binding.tvOption4,
-            binding.tvOption5,
-            binding.tvOption6,
-        )
-    }
-
     private lateinit var level: Level
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,8 +62,6 @@ class GameFragment : Fragment() {
         binding.viewModel = gameViewModel
 
         launchObservers()
-        initOptionsButtons()
-
     }
 
 
@@ -84,27 +71,11 @@ class GameFragment : Fragment() {
     }
 
     private fun launchObservers() {
-
-        gameViewModel.question.observe(viewLifecycleOwner) {
-            for ((index, option) in it.options.withIndex()) {
-                tvOptions[index].text = option.toString()
-            }
-        }
-
         gameViewModel.gameResult.observe(viewLifecycleOwner) {
             launchGameFinishedFragment(it)
         }
     }
 
-
-
-    private fun initOptionsButtons() {
-        for (tvOption: TextView in tvOptions) {
-            tvOption.setOnClickListener {
-                gameViewModel.chooseAnswer(tvOption.text.toString().toInt())
-            }
-        }
-    }
 
     private fun launchGameFinishedFragment(gameResult: GameResult) {
         findNavController().navigate(

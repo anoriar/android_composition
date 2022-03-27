@@ -7,6 +7,11 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.example.composition.R
+import org.w3c.dom.Text
+
+interface OnOptionClickListener {
+    fun onOptionClick(number: Int)
+}
 
 @BindingAdapter("numberToString")
 fun bindNumberToString(tv: TextView, number: Int) {
@@ -38,4 +43,11 @@ fun bindAnswerProgressBarColor(pb: ProgressBar, enoughPercent: Boolean) {
 @BindingAdapter("answerProgressBarProgress")
 fun bindAnswerProgressBarColor(pb: ProgressBar, progress: Int) {
     pb.setProgress(progress, true)
+}
+
+@BindingAdapter("onOptionClickListener")
+fun bindOnOptionClickListener(tv: TextView, clickListener: OnOptionClickListener) {
+    tv.setOnClickListener {
+        clickListener.onOptionClick(tv.text.toString().toInt())
+    }
 }
