@@ -50,34 +50,9 @@ class GameFinishedFragment : Fragment() {
     }
 
     private fun bindViews() {
-        val gameResult = args.gameResult
-        val icon = if (gameResult.winner) R.drawable.ic_smile else R.drawable.ic_sad
-        binding.ivSmile.setImageResource(icon)
-        binding.tvRequiredScore.text = String.format(
-            resources.getString(R.string.required_score),
-            gameResult.gameSettings.minCountOfRightAnswers
-        )
-        binding.tvScoreAnswers.text = String.format(
-            resources.getString(R.string.score_answers),
-            gameResult.countOfRightAnswers,
-        )
-        binding.tvRequiredPercentage.text = String.format(
-            resources.getString(R.string.required_percentage),
-            gameResult.gameSettings.minPercentOfRightAnswers
-        )
-        binding.tvScorePercentage.text = String.format(
-            resources.getString(R.string.score_percentage),
-            getPercentOfRightAnswers()
-        )
+        binding.gameResult = args.gameResult
     }
 
-    private fun getPercentOfRightAnswers() = with(args.gameResult) {
-        if (countOfQuestions == 0) {
-            0
-        } else {
-            ((countOfRightAnswers / countOfQuestions.toDouble()) * 100).toInt()
-        }
-    }
 
     override fun onDestroy() {
         super.onDestroy()
