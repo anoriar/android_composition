@@ -69,6 +69,8 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = gameViewModel
 
         launchObservers()
         initOptionsButtons()
@@ -82,47 +84,11 @@ class GameFragment : Fragment() {
     }
 
     private fun launchObservers() {
-        gameViewModel.formattedTime.observe(viewLifecycleOwner) {
-            binding.tvGameTime.text = it
-        }
 
         gameViewModel.question.observe(viewLifecycleOwner) {
             for ((index, option) in it.options.withIndex()) {
                 tvOptions[index].text = option.toString()
             }
-
-            binding.tvSum.text = it.sum.toString()
-            binding.tvVisibleNumber.text = it.visibleNumber.toString()
-        }
-
-        gameViewModel.progressAnswers.observe(viewLifecycleOwner) {
-            binding.tvAnswerProgress.text = it
-        }
-
-        gameViewModel.enoughCount.observe(viewLifecycleOwner) {
-            if (it) {
-                binding.tvAnswerProgress.setTextColor(getColorByState(it))
-            } else {
-                binding.tvAnswerProgress.setTextColor(getColorByState(it))
-            }
-
-        }
-        gameViewModel.enoughPercent.observe(viewLifecycleOwner) {
-            if (it) {
-                binding.pbAnswerProgress.progressTintList =
-                    ColorStateList.valueOf(getColorByState(it))
-            } else {
-                binding.pbAnswerProgress.progressTintList =
-                    ColorStateList.valueOf(getColorByState(it))
-            }
-        }
-
-        gameViewModel.minPercent.observe(viewLifecycleOwner) {
-            binding.pbAnswerProgress.secondaryProgress = it
-        }
-
-        gameViewModel.percentOfRightAnswers.observe(viewLifecycleOwner) {
-            binding.pbAnswerProgress.setProgress(it, true)
         }
 
         gameViewModel.gameResult.observe(viewLifecycleOwner) {
@@ -130,14 +96,7 @@ class GameFragment : Fragment() {
         }
     }
 
-    private fun getColorByState(goodState: Boolean): Int {
-        val colorResId = if (goodState) {
-            android.R.color.holo_green_light
-        } else {
-            android.R.color.holo_red_light
-        }
-        return ContextCompat.getColor(requireContext(), colorResId)
-    }
+
 
     private fun initOptionsButtons() {
         for (tvOption: TextView in tvOptions) {

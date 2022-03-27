@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.example.composition.presentation.GameViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,6 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:gravity="center"
+            android:text="@{viewModel.formattedTime}"
             android:textColor="@color/purple_700"
             android:textSize="25sp"
             app:layout_constraintBottom_toTopOf="@+id/gl_time_block"
@@ -46,6 +50,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_game_time"
+            app:numberToString="@{viewModel.question.sum}"
             tools:text="1" />
 
         <TextView
@@ -64,6 +69,7 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_sum"
+            app:numberToString="@{viewModel.question.visibleNumber}"
             tools:text="7" />
 
         <TextView
@@ -96,8 +102,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:gravity="start"
-            android:text="@string/progress_answers"
+            android:text="@{viewModel.progressAnswers}"
             android:textSize="20sp"
+            tools:text="@string/progress_answers"
+            app:answerProgressTextColor="@{viewModel.enoughCount}"
             app:layout_constraintBottom_toTopOf="@id/pb_answer_progress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -108,10 +116,13 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:max="100"
+            android:secondaryProgress="@{viewModel.minPercent}"
+            app:answerProgressBarColor="@{viewModel.enoughPercent}"
+            app:answerProgressBarProgress="@{viewModel.percentOfRightAnswers}"
             app:layout_constraintBottom_toTopOf="@+id/gl_progress_block"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:max="100"
             app:layout_constraintTop_toBottomOf="@+id/tv_answer_progress" />
 
         <androidx.constraintlayout.widget.Guideline
